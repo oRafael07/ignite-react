@@ -3,8 +3,11 @@ import { Comment } from './Comment';
 import css from './Post.module.css';
 import { format, formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import { Fragment, useState } from 'react';
 
 export function Post({ author, publishedAt, content }) {
+
+  const [comments, setComments] = useState([1, 2])
 
   const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH'h'mm", {
     locale: ptBR
@@ -14,6 +17,12 @@ export function Post({ author, publishedAt, content }) {
     locale: ptBR,
     addSuffix: true
   })
+
+  function handleCreateNewComment() {
+    event.preventDefault()
+
+    setComments([...comments, comments.length + 1])
+  }
 
   return (
     <article className={css.post}>
@@ -33,16 +42,20 @@ export function Post({ author, publishedAt, content }) {
       </header>
 
       <div className={css.content}>
-        {content.map(item => {
+        {content.map((item, index) => {
           if (item.type === 'paragraph') {
-            return <p>{item.content}</p>
+            return <Fragment key={index}>
+              <p>{item.content}</p>
+            </Fragment>
           } else if (item.type === 'link') {
-            return <p><a href="#">{item.content}</a></p>
+            return <Fragment key={index}>
+              <p><a href="#">{item.content}</a></p>
+            </Fragment>
           }
         })}
       </div>
 
-      <form className={css.commentForm}>
+      <form onSubmit={handleCreateNewComment} className={css.commentForm}>
         <strong>Deixe seu feedback</strong>
 
         <textarea
@@ -55,9 +68,11 @@ export function Post({ author, publishedAt, content }) {
       </form>
 
       <div className={css.commentList}>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map((comment, index) => {
+          return <Fragment key={index}>
+            <Comment />
+          </Fragment>
+        })}
       </div>
     </article>
   )

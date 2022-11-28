@@ -4,6 +4,7 @@ import './global.css'
 
 import css from './App.module.css'
 import { Sidebar } from './components/Sidebar'
+import { Fragment } from 'react'
 
 const posts = [
   {
@@ -48,11 +49,13 @@ function App() {
         <main>
           {posts.map(post => {
             return (
-              <Post
-                author={post.author}
-                content={post.content}
-                publishedAt={post.publishedAt}
-              />
+              <Fragment key={post.id}>
+                <Post
+                  author={post.author}
+                  content={post.content}
+                  publishedAt={post.publishedAt}
+                />
+              </Fragment>
             )
           })}
         </main>
