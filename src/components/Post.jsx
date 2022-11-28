@@ -7,7 +7,9 @@ import { Fragment, useState } from 'react';
 
 export function Post({ author, publishedAt, content }) {
 
-  const [comments, setComments] = useState([1, 2])
+  const [comments, setComments] = useState(['Post muito bom!']);
+
+  const [newCommentText, setNewCommentText] = useState('')
 
   const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH'h'mm", {
     locale: ptBR
@@ -21,7 +23,12 @@ export function Post({ author, publishedAt, content }) {
   function handleCreateNewComment() {
     event.preventDefault()
 
-    setComments([...comments, comments.length + 1])
+    setComments([...comments, newCommentText])
+    setNewCommentText('')
+  }
+
+  function handleNewCommentChange() {
+    setNewCommentText(event.target.value)
   }
 
   return (
@@ -59,6 +66,8 @@ export function Post({ author, publishedAt, content }) {
         <strong>Deixe seu feedback</strong>
 
         <textarea
+          onChange={handleNewCommentChange}
+          value={newCommentText}
           placeholder="Deixe um comentário"
         />
 
@@ -70,7 +79,7 @@ export function Post({ author, publishedAt, content }) {
       <div className={css.commentList}>
         {comments.map((comment, index) => {
           return <Fragment key={index}>
-            <Comment />
+            <Comment content={comment} />
           </Fragment>
         })}
       </div>
