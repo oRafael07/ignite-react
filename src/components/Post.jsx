@@ -49,13 +49,13 @@ export function Post({ author, publishedAt, content }) {
       </header>
 
       <div className={css.content}>
-        {content.map((item, index) => {
+        {content.map((item) => {
           if (item.type === 'paragraph') {
-            return <Fragment key={index}>
+            return <Fragment key={item.content}>
               <p>{item.content}</p>
             </Fragment>
           } else if (item.type === 'link') {
-            return <Fragment key={index}>
+            return <Fragment key={item.content}>
               <p><a href="#">{item.content}</a></p>
             </Fragment>
           }
@@ -77,8 +77,8 @@ export function Post({ author, publishedAt, content }) {
       </form>
 
       <div className={css.commentList}>
-        {comments.map((comment, index) => {
-          return <Fragment key={index}>
+        {comments.map((comment) => {
+          return <Fragment key={comment}>
             <Comment content={comment} />
           </Fragment>
         })}
